@@ -1,0 +1,10 @@
+version: '3'
+services:
+  ovh-ks-a-watcher:
+    image: oven/bun:latest
+    command: bash -c "bun install && bun run start"
+    restart: unless-stopped
+    container_name:  ovh-ks-a-watcher
+    working_dir: /app
+    environment:
+      - TZ=Europe/Paris
