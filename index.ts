@@ -77,7 +77,7 @@ class OvhKSAWatcher extends WebhookClient {
 
     data.forEach(async (item) => {
       item.datacenters.forEach(async (dc) => {
-        if (dc.availability === 'unavailable' && this.alreadyKnownLocations.includes(dc.datacenter)) { 
+        if (dc.availability === 'unavailable' && this.alreadyKnownLocations.includes(dc.datacenter)) {
           await this.sendToWebhook(item, dc);
           this.alreadyKnownLocations = this.alreadyKnownLocations.filter((loc) => loc !== dc.datacenter);
           console.log(this.alreadyKnownLocations);
@@ -99,6 +99,7 @@ class OvhKSAWatcher extends WebhookClient {
   }
 
   async start(): Promise<void> {
+    await this.send({ content: 'Lancement du watcher KS-A', username: 'OVH KS-A Watcher' });
     await this.watch();
     setInterval(() => this.watch(), 60000); // 60 seconds by default
   }
