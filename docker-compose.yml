@@ -6,5 +6,7 @@ services:
     restart: unless-stopped
     container_name:  ovh-ks-a-watcher
     working_dir: /app
+    volumes:
+      - .:/app
     environment:
       - TZ=Europe/Paris
