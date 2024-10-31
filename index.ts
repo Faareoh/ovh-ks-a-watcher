@@ -101,7 +101,7 @@ class OvhKSAWatcher extends WebhookClient {
   async start(): Promise<void> {
     await this.send({ content: 'Lancement du watcher KS-A', username: 'OVH KS-A Watcher' });
     await this.watch();
-    setInterval(() => this.watch(), 60000); // 60 seconds by default
+    setInterval(() => this.watch(), 30000);
   }
 }
 
