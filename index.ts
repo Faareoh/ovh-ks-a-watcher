@@ -100,10 +100,12 @@ class OvhKSAWatcher extends WebhookClient {
   }
 
   async watch(): Promise<void> {
-    Object.values(SERVERS).forEach(async (server) => {
+    SERVERS.forEach(async (server) => {
       const res = await fetch(server.getApiURL(), {
         method: 'GET',
       });
+
+      console.log(`Watching ${server.NAME}`);
 
       const data = await res.json() as OvhResponse[];
 
