@@ -58,7 +58,7 @@ const SERVERS: Server[] = [
 
 
 class OvhKSAWatcher extends WebhookClient {
-  private alreadyKnownLocations: string[] = []
+  private alreadyKnownLocations: { location: string, serverType: string }[] = [];
 
   constructor() {
     if (!Bun.env.DISCORD_WEBHOOK_URL) {
@@ -109,10 +109,9 @@ class OvhKSAWatcher extends WebhookClient {
 
       data.forEach(async (item) => {
         item.datacenters.forEach(async (dc) => {
-          if (dc.availability === 'unavailable' && this.alreadyKnownLocations.includes(dc.datacenter)) {
+          if (dc.availability === 'unavailable' && this.alreadyKnownLocations.some((loc) => loc.location === dc.datacenter && loc.serverType === server.NAME)) {
             await this.sendToWebhook(server, item, dc);
-            this.alreadyKnownLocations = this.alreadyKnownLocations.filter((loc) => loc !== dc.datacenter);
-            console.log(this.alreadyKnownLocations);
+            this.alreadyKnownLocations = this.alreadyKnownLocations.filter((loc) => loc.location !== dc.datacenter && loc.serverType !== server.NAME);
             return;
           }
 
@@ -120,12 +119,12 @@ class OvhKSAWatcher extends WebhookClient {
             return;
           }
 
-          if (this.alreadyKnownLocations.includes(dc.datacenter)) {
+          if (this.alreadyKnownLocations.some((loc) => loc.location === dc.datacenter && loc.serverType === server.NAME)) {
             return;
           }
 
           await this.sendToWebhook(server, item, dc);
-          this.alreadyKnownLocations.push(dc.datacenter);
+          this.alreadyKnownLocations.push({ location: dc.datacenter, serverType: server.NAME });
         });
       });
     });
