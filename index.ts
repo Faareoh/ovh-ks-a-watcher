@@ -105,8 +105,6 @@ class OvhKSAWatcher extends WebhookClient {
         method: 'GET',
       });
 
-      console.log(`Watching ${server.NAME}`);
-
       const data = await res.json() as OvhResponse[];
 
       data.forEach(async (item) => {
