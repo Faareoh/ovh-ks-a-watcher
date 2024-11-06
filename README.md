@@ -1,4 +1,4 @@
-A very simple script to watch KS-A server on OVH
+A very simple script to watch KS's server on OVH (Currently KS-A and KS-LE-B, you can add new servers by adding them to the SERVERS const)
 
 ## Requirements
 - docker or bun
